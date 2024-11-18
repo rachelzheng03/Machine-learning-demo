@@ -27,7 +27,7 @@ Downloading data from https://storage.googleapis.com/tensorflow/tf-keras-dataset
 :::
 
 
-::: {#cell-3 .cell execution_count=3}
+::: {#cell-3 .cell execution_count=8}
 ``` {.python .cell-code}
 def plotImage(index,x_train,x_test,y_train):
     # Normalize the values so they are a decimal between 0 and 1
@@ -39,21 +39,31 @@ def plotImage(index,x_train,x_test,y_train):
 
 
 #TODO: change the index to see other values in the dataset
+plotImage(11, x_train, x_test, y_train)
+```
+
+::: {.cell-output .cell-output-stdout}
+```
+The plot represents the number 5
 ```
 :::
 
+::: {.cell-output .cell-output-display}
+![](mnist_files/figure-html/cell-4-output-2.png){}
+:::
+:::
 
-::: {#cell-4 .cell}
+
+::: {#cell-4 .cell execution_count=9}
 ``` {.python .cell-code}
 # TODO: Add reshape the data in this code block
-x_train_flat = x_train.reshape(NumberOfRows, NumberOfColumns)
-# x_train_flat = 
-# x_test_flat =
+x_train_flat = x_train.reshape(len(x_train), 784)
+x_test_flat = x_test.reshape(len(x_test), 784)
 ```
 :::
 
 
-::: {#cell-5 .cell}
+::: {#cell-5 .cell execution_count=10}
 ``` {.python .cell-code}
 # Model creation
 model = keras.Sequential([
@@ -71,61 +81,63 @@ model.compile (
 
 ::: {.cell-output .cell-output-stderr}
 ```
-/Users/lakebradford/Desktop/Machine-learning-demo/.venv/lib/python3.12/site-packages/keras/src/layers/core/dense.py:87: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+c:\Users\rzhe2\WM\CSCI_435\Machine-learning-demo\myenv\lib\site-packages\keras\src\layers\core\dense.py:87: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
   super().__init__(activity_regularizer=activity_regularizer, **kwargs)
 ```
 :::
 :::
 
 
-::: {#cell-6 .cell}
+::: {#cell-6 .cell execution_count=11}
 ``` {.python .cell-code}
-# TODO: Train the model using model.fit here
+# TODO: Train the model using model.fit here 
+model.fit(x_train_flat, y_train, epochs=5)
 ```
 
 ::: {.cell-output .cell-output-stdout}
 ```
 Epoch 1/5
-1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 1ms/step - accuracy: 0.7168 - loss: 1.1381
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 6s 2ms/step - accuracy: 0.6756 - loss: 1.1928
 Epoch 2/5
-1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 937us/step - accuracy: 0.9095 - loss: 0.3223
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 4s 2ms/step - accuracy: 0.8936 - loss: 0.3626
 Epoch 3/5
-1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 978us/step - accuracy: 0.9140 - loss: 0.2888
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 4s 2ms/step - accuracy: 0.9099 - loss: 0.3075
 Epoch 4/5
-1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 970us/step - accuracy: 0.9202 - loss: 0.2684
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 4s 2ms/step - accuracy: 0.9137 - loss: 0.2859
 Epoch 5/5
-1875/1875 ━━━━━━━━━━━━━━━━━━━━ 2s 1ms/step - accuracy: 0.9198 - loss: 0.2697
+1875/1875 ━━━━━━━━━━━━━━━━━━━━ 6s 3ms/step - accuracy: 0.9152 - loss: 0.2878
 ```
 :::
 
-::: {.cell-output .cell-output-display}
+::: {.cell-output .cell-output-display execution_count=11}
 ```
-<keras.src.callbacks.history.History>
+<keras.src.callbacks.history.History at 0x1c67e305c90>
 ```
 :::
 :::
 
 
-::: {#cell-7 .cell}
+::: {#cell-7 .cell execution_count=16}
 ``` {.python .cell-code}
 # TODO: Test the model against the test data using model.evaluate
+model.evaluate(x_test_flat, y_test)
 ```
 
 ::: {.cell-output .cell-output-stdout}
 ```
-313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 416us/step - accuracy: 0.9094 - loss: 0.3053
+313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 893us/step - accuracy: 0.9021 - loss: 0.3215
 ```
 :::
 
-::: {.cell-output .cell-output-display}
+::: {.cell-output .cell-output-display execution_count=16}
 ```
-[0.26149341464042664, 0.9218999743461609]
+[0.28421449661254883, 0.9146000146865845]
 ```
 :::
 :::
 
 
-::: {#cell-8 .cell}
+::: {#cell-8 .cell execution_count=17}
 ``` {.python .cell-code}
 # TODO: Run the confusion matrix
 def plot_confusion_matrix(model, x_test_flat, y_test):
@@ -143,12 +155,12 @@ def plot_confusion_matrix(model, x_test_flat, y_test):
     plt.show()
 
 # TODO: Uncomment out the line below and run the code block
-# plot_confusion_matrix(model,x_test_flat,y_test)
+plot_confusion_matrix(model,x_test_flat,y_test)
 ```
 
 ::: {.cell-output .cell-output-stdout}
 ```
-313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 448us/step
+313/313 ━━━━━━━━━━━━━━━━━━━━ 0s 974us/step
 ```
 :::
 
